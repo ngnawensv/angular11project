@@ -4,7 +4,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import {RouterModule} from '@angular/router';
 import {AppRoutingModule} from './app-routing.module';
-import {FormsModule} from "@angular/forms";
+import {ReactiveFormsModule} from "@angular/forms";
 import {ProductAddComponent} from "./product-add/product-add.component";
 import {ProductEditComponent} from "./product-edit/product-edit.component";
 import {ProductGetComponent} from "./product-get/product-get.component";
@@ -22,7 +22,7 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     RouterModule,
     HttpClientModule,
-    FormsModule // Module for Template Driven Forms
+    ReactiveFormsModule // Module for Reactive Forms
   ],
   providers: [],
   bootstrap: [AppComponent]

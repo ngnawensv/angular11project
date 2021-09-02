@@ -2,41 +2,31 @@
   <div class="card-body">
 
 <!--
-In this form, we use the Template Driven Forms of Angular
-ngForm parent directive interact with all the child ngModel directive and build a model of the whole of form
-[(ngModel)]: for two way binding: interaction immedially we component class model when a user modfied some fields
-[ngModel]: for one way binding: interaction we component class model when a user modfied some fields and submited
- ngModel: used when we get only the validation
+In this form, we use the Reactive Forms of Angular
 -->
-    <form #form="ngForm" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-group">
         <label class="col-md-4">Product Name</label>
         <input type="text"
                class="form-control"
-               name="productName"
-               placeholder="Product Name" [(ngModel)]="product.productName"
-               required="true">
+               formControlName="productName">
       </div>
 
 
       <div class="form-group">
         <label class="col-md-4">Product Description</label>
-        <textarea class="form-control" rows="5" cols="5"
-                  name="productDescription"
-                  placeholder="Product Description"
-                  [(ngModel)]="product.productDescription"
-                  required="true">
+        <textarea class="form-control"
+                   rows="5" cols="5"
+                  formControlName="productDescription">
         </textarea>
       </div>
 
 
       <div class="form-group">
         <label class="col-md-4">Product Price</label>
-        <input type="text" class="form-control"
-               name="productPrice"
-               placeholder="Product Price"
-               [(ngModel)]="product.productPrice"
-               required="true">
+        <input type="text"
+               class="form-control"
+               formControlName="productPrice">
       </div>
 
       <div class="form-group">
