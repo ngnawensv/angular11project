@@ -1,5 +1,13 @@
 <div class="card">
   <div class="card-body">
+
+<!--
+In this form, we use the Template Driven Forms of Angular
+ngForm parent directive interact with all the child ngModel directive and build a model of the whole of form
+[(ngModel)]: for two way binding: interaction immedially we component class model when a user modfied some fields
+[ngModel]: for one way binding: interaction we component class model when a user modfied some fields and submited
+ ngModel: used when we get only the validation
+-->
     <form #form="ngForm" (ngSubmit)="onSubmit()">
       <div class="form-group">
         <label class="col-md-4">Product Name</label>
@@ -32,7 +40,7 @@
       </div>
 
       <div class="form-group">
-       <button type="submit" class="btn btn-primary"  [disabled]="!form.valid">Create Product</button>
+       <button type="submit" class="btn btn-primary"  [disabled]="form.invalid">Create Product</button>
       </div>
     </form>
 
