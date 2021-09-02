@@ -8,7 +8,9 @@ import {Product} from "../model/product";
   styleUrls: ['./product-add.component.scss']
 })
 export class ProductAddComponent implements OnInit {
+
   product:Product={};
+
   constructor(private productService:ProductService) {
   }
 

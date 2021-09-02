@@ -22,7 +22,7 @@ import {HttpClientModule} from "@angular/common/http";
     AppRoutingModule,
     RouterModule,
     HttpClientModule,
-    FormsModule
+    FormsModule // Module for Template Driven Forms
   ],
   providers: [],
   bootstrap: [AppComponent]
