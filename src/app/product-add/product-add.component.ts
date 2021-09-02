@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from "../service/product.service";
 import {Product} from "../model/product";
+import {FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-product-add',
@@ -10,6 +11,11 @@ import {Product} from "../model/product";
 export class ProductAddComponent implements OnInit {
 
   product:Product={};
+  form=new FormGroup({
+    "productName": new FormControl("",Validators.required),
+    "productDescription": new FormControl("",Validators.required),
+    "productPrice": new FormControl("",Validators.required)
+  });
 
   constructor(private productService:ProductService) {
   }
@@ -18,6 +24,8 @@ export class ProductAddComponent implements OnInit {
   }
 
   onSubmit() {
-    this.productService.addProduct(this.product);
+    this.product=this.form.getRawValue();
+    //console.log(this.form.getRawValue());
+   this.productService.addProduct(this.product);
   }
 }
