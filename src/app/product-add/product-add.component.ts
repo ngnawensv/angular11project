@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {ProductService} from "../service/product.service";
 import {Product} from "../model/product";
-import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-product-add',
@@ -11,21 +11,25 @@ import {FormControl, FormGroup, Validators} from "@angular/forms";
 export class ProductAddComponent implements OnInit {
 
   product:Product={};
-  form=new FormGroup({
-    "productName": new FormControl("",Validators.required),
-    "productDescription": new FormControl("",Validators.required),
-    "productPrice": new FormControl("",Validators.required)
-  });
+  form:FormGroup;
 
-  constructor(private productService:ProductService) {
-  }
+  constructor( private fb:FormBuilder, private productService:ProductService) {}
 
   ngOnInit() {
+    this.createForm();
+  }
+
+  createForm(){
+    this.form=this.fb.group({
+      "productName": ["",Validators.required],
+      "productDescription": ["",Validators.required],
+      "productPrice": ["",Validators.required],
+    });
   }
 
   onSubmit() {
     this.product=this.form.getRawValue();
-    //console.log(this.form.getRawValue());
+    console.log( this.product);
    //this.productService.addProduct(this.product);
   }
 }
