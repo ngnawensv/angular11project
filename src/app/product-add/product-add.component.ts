@@ -26,6 +26,6 @@ export class ProductAddComponent implements OnInit {
   onSubmit() {
     this.product=this.form.getRawValue();
     //console.log(this.form.getRawValue());
-   this.productService.addProduct(this.product);
+   //this.productService.addProduct(this.product);
   }
 }
