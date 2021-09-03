@@ -9,13 +9,15 @@ import {ProductAddComponent} from "./product-add/product-add.component";
 import {ProductEditComponent} from "./product-edit/product-edit.component";
 import {ProductGetComponent} from "./product-get/product-get.component";
 import {HttpClientModule} from "@angular/common/http";
+import { UserAddComponent } from './user-add/user-add.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ProductAddComponent,
     ProductEditComponent,
-    ProductGetComponent
+    ProductGetComponent,
+    UserAddComponent
   ],
   imports: [
     BrowserModule,
