@@ -1,5 +1,16 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators} from "@angular/forms";
+import {
+  AbstractControl,
+  AsyncValidatorFn,
+  FormBuilder,
+  FormGroup,
+  ValidationErrors,
+  ValidatorFn,
+  Validators
+} from "@angular/forms";
+import {User} from "../model/user.model";
+import {UserService} from "../service/user.service";
+import {map} from "rxjs/operators";
 
 
 @Component({
@@ -10,11 +21,17 @@ import {AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, 
 export class UserAddComponent implements OnInit {
 
   //Global declaration
+  user: User = {};
   form: FormGroup;
 
   //Dependence Injection of  FormBuilder
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
   }
+
+  get email() {
+    return this.form.controls['email'];
+  }
+
 
   ngOnInit(): void {
     this.createUserForm()
@@ -23,18 +40,28 @@ export class UserAddComponent implements OnInit {
   //
   createUserForm() {
     this.form = this.fb.group({
-      email: ['', {Validators: [Validators.required, Validators.email], updateOn: 'blur'}],
+      email: ['', {
+        Validators: [Validators.required, Validators.email],
+        asyncValidators: [userExistsValidator(this.userService)],
+        updateOn: 'blur'
+      }],
       password: ['', [Validators.required, Validators.minLength(8), createPasswordStringValidator()]],
-      num1: [null, Validators.required],
-      num2: [null, Validators.required],
-    },
-      {
-        validators: [createDateRangeValidator()]
-      });
+    }, {
+      validators: [createNoEmptyValidator()]
+    });
   }
 
+  //This method is use to add new user in data base
   onSubmit() {
-    console.log(this.form.getRawValue())
+    this.user = this.form.getRawValue();
+    this.userService.addUser(this.user).subscribe(
+      data => {
+        console.log(data);
+      },
+      error => {
+        console.log(error);
+      }
+    )
   }
 
 }
@@ -54,15 +81,23 @@ function createPasswordStringValidator(): ValidatorFn {
   }
 }
 
-//Custom multi-field validator forms. In multi field we manipulate the entire form "form: FormGroup"
-function createDateRangeValidator(): ValidatorFn {
-  return (form: FormGroup): ValidationErrors | null => {
-    const num1:number = form.get("num1").value;
-    const num2:number = form.get("num2").value;
-    if (num1 && num2) {
-      const isMAxValid = (num2 - num1 > 0);
-      return isMAxValid ? null : {MaxNumber:true};
-    }
-    return null;
+//Use asynchronous validator forms
+function userExistsValidator(userService: UserService): AsyncValidatorFn {
+  return (control: AbstractControl) => {
+    return userService.findUserByEmail(control.value)
+      .pipe(
+        map(user => user ? {userExists: true} : null)
+      );
   }
 }
+
+//multi-field control validator
+function createNoEmptyValidator(): ValidatorFn {
+  return (form: FormGroup): ValidationErrors | null => {
+    const email: string = form.get("email").value;
+    const password: string = form.get("password").value;
+    const isEmpty = email.length == 0 && password.length == 0;
+    return !isEmpty ? null : {MaxNumber: true};
+  }
+}
+

@@ -3,13 +3,19 @@
     <!--
     In this form, we use the Reactive Forms of Angular
     -->
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
       <div class="form-group">
         <label class="col-md-4">Email</label>
         <input type="email"
+               name="email"
                class="form-control"
                formControlName="email">
+        <div class="text-danger" *ngIf="form.controls['email'].errors?.userExists">
+          This {{form.controls['email'].value}} is already
+        </div>
       </div>
+
+
 
       <div class="form-group">
         <label class="col-md-4">Password</label>
@@ -18,18 +24,6 @@
                formControlName="password">
       </div>
 
-      <!--
-      This field are using to implement multi-field validator form
-      The form can be validate if the validator define on two field below is satisfy
-      -->
-      <div class="form-group">
-        <label class="col-md-4">Number 1</label>
-        <input type="text" class="form-control" placeholder="Number 1" formControlName="num1">
-      </div>
-      <div class="form-group">
-        <label class="col-md-4">Number 2</label>
-        <input type="text" class="form-control" placeholder="Number 2" formControlName="num2">
-      </div>
       <div class="form-group">
         <button type="submit"
                 class="btn btn-primary"
