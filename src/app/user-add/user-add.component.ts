@@ -10,7 +10,7 @@ import {
 } from "@angular/forms";
 import {User} from "../model/user.model";
 import {UserService} from "../service/user.service";
-import {map} from "rxjs/operators";
+import {filter, map} from "rxjs/operators";
 
 
 @Component({
@@ -20,9 +20,19 @@ import {map} from "rxjs/operators";
 })
 export class UserAddComponent implements OnInit {
 
+  /**
+   * General structure of formControl validator:
+   * Syntax: myControl: ['', [Synchronous Validators],[Asynchronous Validators]]
+   * Ex: email: ['', [Validators.required, Validators.email],[userExistsValidator(this.userService)]]
+   */
   //Global declaration
   user: User = {};
-  form: FormGroup;
+  form = this.fb.group({
+    email: ['', [Validators.required, Validators.email],[userExistsValidator(this.userService)]],
+    password: ['', [Validators.required, Validators.minLength(8), createPasswordStringValidator()]],
+  }, {
+    validators: [createNoEmptyValidator()]
+  });
 
   //Dependence Injection of  FormBuilder
   constructor(private fb: FormBuilder, private userService: UserService) {
@@ -34,22 +44,22 @@ export class UserAddComponent implements OnInit {
 
 
   ngOnInit(): void {
-    this.createUserForm()
+    //this.createUserForm()
   }
 
   //
-  createUserForm() {
-    this.form = this.fb.group({
-      email: ['', {
-        Validators: [Validators.required, Validators.email],
-        asyncValidators: [userExistsValidator(this.userService)],
-        updateOn: 'blur'
-      }],
-      password: ['', [Validators.required, Validators.minLength(8), createPasswordStringValidator()]],
-    }, {
-      validators: [createNoEmptyValidator()]
-    });
-  }
+  /* createUserForm() {
+     this.form = this.fb.group({
+       email: ['', {
+         Validators: [Validators.required, Validators.email],
+         asyncValidators: [userExistsValidator(this.userService)],
+         updateOn: 'blur'
+       }],
+       password: ['', [Validators.required, Validators.minLength(8), createPasswordStringValidator()]],
+     }, {
+       validators: [createNoEmptyValidator()]
+     });
+   }*/
 
   //This method is use to add new user in data base
   onSubmit() {
@@ -84,7 +94,8 @@ function createPasswordStringValidator(): ValidatorFn {
 //Use asynchronous validator forms
 function userExistsValidator(userService: UserService): AsyncValidatorFn {
   return (control: AbstractControl) => {
-    return userService.findUserByEmail(control.value)
+      const value = control.value;
+    return userService.findUserByEmail(value)
       .pipe(
         map(user => user ? {userExists: true} : null)
       );
