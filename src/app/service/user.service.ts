@@ -14,7 +14,11 @@ export class UserService {
     return this.http.post("http://localhost:8081/users/create",user);
   }
 
-  findUserByEmail(email:any) {
+  findUserByEmail(email:string) {
+    if(email){
+      console.log("*************** "+email)
+      //return  null;
+    }
     return this.http.get("http://localhost:8081/users/email/"+email);
   }
 }
