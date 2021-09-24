@@ -1,0 +1,15 @@
+<form [formGroup]="form">
+  <div class="form-group">
+    <label class="col-md-4">Language</label>
+    <input type="text"
+           class="form-control"
+           formControlName="language">
+  </div>
+  <div class="form-group">
+    <button class="btn btn-primary" (click)="savePerson()" [disabled]="form.invalid">Valider</button>
+  </div>
+
+  <div class="form-group">
+    <button class="btn btn-primary" (click)="removePerson($event)" [disabled]="form.invalid">Valider</button>
+  </div>
+</form>

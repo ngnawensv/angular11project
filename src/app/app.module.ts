@@ -10,6 +10,7 @@ import {ProductEditComponent} from "./product-edit/product-edit.component";
 import {ProductGetComponent} from "./product-get/product-get.component";
 import {HttpClientModule} from "@angular/common/http";
 import { UserAddComponent } from './user-add/user-add.component';
+import { TestCodeComponent } from './test-code/test-code.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { UserAddComponent } from './user-add/user-add.component';
     ProductAddComponent,
     ProductEditComponent,
     ProductGetComponent,
-    UserAddComponent
+    UserAddComponent,
+    TestCodeComponent
   ],
   imports: [
     BrowserModule,
